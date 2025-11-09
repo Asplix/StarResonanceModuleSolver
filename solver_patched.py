@@ -18,7 +18,7 @@ from network_interface_util import get_network_interfaces, select_network_interf
 
 def levels_pretty(levels: dict) -> str:
     items = [(a, lv) for a, lv in levels.items() if lv > 0]
-    return "，".join([f"{a}: Lv{lv}" for a, lv in items]) if items else "（无有效等级）"
+    return "，".join([f"{a}: Lv{lv}" for a, lv in items]) if items else "(No effective level)"
 
 try:
     from ctypes import windll
@@ -81,10 +81,10 @@ vr.USE_LEFTMOST_TOKEN = True
 
 # 常量
 ATTRS = [
-    "抵御魔法","抵御物理","极·生命凝聚","极·绝境守护","极·生命波动","极·生命吸取",
-    "力量加持","敏捷加持","智力加持","特攻伤害加持","精英打击","特攻治疗加持",
-    "专精治疗加持","施法专注","攻速专注","暴击专注","幸运专注","极·伤害叠加",
-    "极·灵活身法","极·急救措施","极·全队幸暴"
+    "Resistance","Armor","Life Condense","Final Protection","Life Wave","Life Steal",
+    "Strength Boost","Agility Boost","Intellect Boost","Special Attack","Elite Strike","Healing Boost",
+    "Healing Enhance","Cast Focus","Attack SPD","Crit Focus","Luck Focus","DMG Stack",
+    "Agile","First Aid","Team Luck & Crit"
 ]
 POINT_MIN, POINT_MAX = 1, 10
 SLOT_DEFAULT = 4
@@ -94,22 +94,22 @@ ABS_KEEP_LIMIT = 100   # 绝对最高方案
 
 # 职业对应词条
 CLASS_ATTRS = {
-    "光盾": {"抵御魔法","抵御物理","极·生命凝聚","极·绝境守护","极·生命波动","极·生命吸取"},
-    "防回": {"抵御魔法","抵御物理","暴击专注","极·生命凝聚","极·绝境守护","极·生命波动","极·生命吸取"},
-    "岩盾": {"抵御魔法","抵御物理","极·绝境守护"},
-    "格挡": {"抵御魔法","抵御物理","极·绝境守护","幸运专注"},
-    "惩击": {"智力加持","特攻治疗加持","专精治疗加持","幸运专注","极·生命凝聚","极·急救措施","极·全队幸暴"},
-    "愈合": {"施法专注","特攻治疗加持","专精治疗加持","幸运专注","极·生命凝聚","极·急救措施","极·全队幸暴"},
-    "狂音": {"智力加持","特攻治疗加持","专精治疗加持","攻速专注","幸运专注","极·生命凝聚","极·急救措施","极·全队幸暴"},
-    "协奏": {"特攻治疗加持","专精治疗加持","施法专注","极·生命凝聚","极·急救措施","极·全队幸暴","暴击专注"},
-    "居合": {"敏捷加持","特攻伤害加持","精英打击","暴击专注","极·伤害叠加","极·灵活身法","极·生命波动"},
-    "月刃": {"敏捷加持","特攻伤害加持","精英打击","攻速专注","幸运专注","极·伤害叠加","极·灵活身法","极·生命波动"},
-    "重装": {"特攻伤害加持","精英打击","攻速专注","力量加持","极·伤害叠加","极·灵活身法","极·生命波动"},
-    "空战": {"特攻伤害加持","精英打击","力量加持","极·伤害叠加","极·灵活身法","极·生命波动","暴击专注","幸运专注"},
-    "冰矛": {"智力加持","特攻伤害加持","精英打击","施法专注","暴击专注","幸运专注","极·伤害叠加","极·灵活身法"},
-    "射线": {"智力加持","特攻伤害加持","精英打击","施法专注","极·伤害叠加","极·灵活身法"},
-    "驭兽": {"敏捷加持","特攻伤害加持","精英打击","攻速专注","极·伤害叠加","极·灵活身法"},
-    "驯鹰": {"敏捷加持","特攻伤害加持","精英打击","攻速专注","暴击专注","幸运专注","极·伤害叠加","极·灵活身法"},
+    "Radiant Guard": {"Resistance","Armor","Life Condense","Final Protection","Life Wave","Life Steal"},
+    "Bulwark": {"Resistance","Armor","Crit Focus","Life Condense","Final Protection","Life Wave","Life Steal"},
+    "Stonewall": {"Resistance","Armor","Final Protection"},
+    "Block": {"Resistance","Armor","Final Protection","Luck Focus"},
+    "Punishing Strike": {"Intellect Boost","Healing Boost","Healing Enhance","Luck Focus","Life Condense","First Aid","Team Luck & Crit"},
+    "Healing": {"Cast Focus","Healing Boost","Healing Enhance","Luck Focus","Life Condense","First Aid","Team Luck & Crit"},
+    "Dissonance": {"Intellect Boost","Healing Boost","Healing Enhance","Attack SPD","Luck Focus","Life Condense","First Aid","Team Luck & Crit"},
+    "Concerto": {"Healing Boost","Healing Enhance","Cast Focus","Life Condense","First Aid","Team Luck & Crit","Crit Focus"},
+    "Iaido": {"Agility Boost","Special Attack","Elite Strike","Crit Focus","DMG Stack","Agile","Life Wave"},
+    "Moonblade": {"Agility Boost","Special Attack","Elite Strike","Attack SPD","Luck Focus","DMG Stack","Agile","Life Wave"},
+    "Overdrive": {"Special Attack","Elite Strike","Attack SPD","Strength Boost","DMG Stack","Agile","Life Wave"},
+    "Aerial": {"Special Attack","Elite Strike","Strength Boost","DMG Stack","Agile","Life Wave","Crit Focus","Luck Focus"},
+    "Frostlance": {"Intellect Boost","Special Attack","Elite Strike","Cast Focus","Crit Focus","Luck Focus","DMG Stack","Agile"},
+    "Ray": {"Intellect Boost","Special Attack","Elite Strike","Cast Focus","DMG Stack","Agile"},
+    "Beastmaster": {"Agility Boost","Special Attack","Elite Strike","Attack SPD","DMG Stack","Agile"},
+    "Falconry": {"Agility Boost","Special Attack","Elite Strike","Attack SPD","Crit Focus","Luck Focus","DMG Stack","Agile"},
 }
 
 CLASS_LIST = list(CLASS_ATTRS.keys())
@@ -125,9 +125,9 @@ def points_to_level(p: int) -> int:
     return 6  # >=20
 
 def format_gem_str(g):
-    parts = [f"{g['a1']} {g['p1']}点", f"{g['a2']} {g['p2']}点"]
+    parts = [f"{g['a1']} {g['p1']}", f"{g['a2']} {g['p2']}"]
     if "a3" in g and "p3" in g:
-        parts.append(f"{g['a3']} {g['p3']}点")
+        parts.append(f"{g['a3']} {g['p3']}")
     return "  +  ".join(parts)
 
 
@@ -139,12 +139,12 @@ def _levels_from_points(pts: dict) -> dict:
 def _pretty_levels_table(levels: dict) -> str:
     """把 {属性: 等级} 渲染成多行文本，只显示 >=1 级的属性。"""
     if not levels:
-        return "（无）"
+        return "(None)"
     rows = [(a, lv) for a, lv in levels.items() if lv and lv > 0]
     rows.sort(key=lambda x: (-x[1], x[0]))  # 先按等级降序，再按名称升序
     if not rows:
-        return "（全为0级）"
-    return "\n".join([f" - {a}：{lv}级" for a, lv in rows])
+        return "(All Level 0)"
+    return "\n".join([f" - {a}: Lv{lv}" for a, lv in rows])
 
 
 ICON_DIR = BASE_DIR / "icons"
@@ -159,7 +159,7 @@ class NetworkInterfaceDialog(tk.Toplevel):
     """网络接口选择对话框"""
     def __init__(self, master, interfaces):
         super().__init__(master)
-        self.title("选择网络接口")
+        self.title("Select Network Interface")
         self.resizable(False, False)
         self.grab_set()
         self.result = None
@@ -183,7 +183,7 @@ class NetworkInterfaceDialog(tk.Toplevel):
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # 标题
-        ttk.Label(main_frame, text="请选择要用于抓包的网络接口：", 
+        ttk.Label(main_frame, text="Please select the network interface to use for capture:", 
                  font=("Segoe UI", 10, "bold")).pack(anchor="w", pady=(0,10))
         
         # 接口列表框架
@@ -205,8 +205,8 @@ class NetworkInterfaceDialog(tk.Toplevel):
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(fill=tk.X, pady=(10,0))
         
-        ttk.Button(btn_frame, text="确定", command=self.on_ok).pack(side=tk.RIGHT, padx=(5,0))
-        ttk.Button(btn_frame, text="取消", command=self.on_cancel).pack(side=tk.RIGHT)
+        ttk.Button(btn_frame, text="OK", command=self.on_ok).pack(side=tk.RIGHT, padx=(5,0))
+        ttk.Button(btn_frame, text="Cancel", command=self.on_cancel).pack(side=tk.RIGHT)
         
         # 双击选择
         self.listbox.bind("<Double-Button-1>", lambda e: self.on_ok())
@@ -226,14 +226,14 @@ class NetworkInterfaceDialog(tk.Toplevel):
             description = interface.get('description', name)
             is_up = "✓" if interface.get('is_up', False) else "✗"
             addresses = [addr['addr'] for addr in interface['addresses']]
-            addr_str = ", ".join(addresses) if addresses else "无IP地址"
+            addr_str = ", ".join(addresses) if addresses else "No IP Address"
             
             # 格式化显示文本
-            status_text = "活动" if interface.get('is_up', False) else "非活动"
-            default_text = " (默认)" if i == default_index else ""
+            status_text = "Active" if interface.get('is_up', False) else "Inactive"
+            default_text = " (Default)" if i == default_index else ""
             
             display_text = f"{i:2d}. {is_up} {description}{default_text}"
-            detail_text = f"     地址: {addr_str} | 状态: {status_text}"
+            detail_text = f"     Address: {addr_str} | Status: {status_text}"
             
             # 添加到列表框
             self.listbox.insert(tk.END, display_text)
@@ -252,7 +252,7 @@ class NetworkInterfaceDialog(tk.Toplevel):
         """确定选择"""
         selection = self.listbox.curselection()
         if not selection:
-            tk.messagebox.showwarning("提示", "请选择一个网络接口！")
+            tk.messagebox.showwarning("Info", "Please select a network interface!")
             return
             
         # 计算实际的接口索引（每个接口占3行）
@@ -263,7 +263,7 @@ class NetworkInterfaceDialog(tk.Toplevel):
             self.result = interface_index
             self.destroy()
         else:
-            tk.messagebox.showerror("错误", "选择的接口无效！")
+            tk.messagebox.showerror("Error", "Invalid interface selected!")
             
     def on_cancel(self):
         """取消选择"""
@@ -273,15 +273,15 @@ class NetworkInterfaceDialog(tk.Toplevel):
 class _Progress(tk.Toplevel):
     def __init__(self, master, total, on_cancel):
         super().__init__(master)
-        self.title("正在计算…")
+        self.title("Calculating...")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", on_cancel)
         self.grab_set()  # 模态
-        self.var = tk.StringVar(value="准备中…")
+        self.var = tk.StringVar(value="Preparing...")
         ttk.Label(self, textvariable=self.var).pack(padx=14, pady=(12,6))
         self.pb = ttk.Progressbar(self, length=360, mode="determinate", maximum=max(1, total))
         self.pb.pack(padx=14, pady=6)
-        ttk.Button(self, text="取消", command=on_cancel).pack(pady=(6,12))
+        ttk.Button(self, text="Cancel", command=on_cancel).pack(pady=(6,12))
         self.update_idletasks()
         # 居中
         try:
@@ -293,13 +293,13 @@ class _Progress(tk.Toplevel):
 
     def set_progress(self, done, total):
         self.pb["value"] = min(done, total)
-        self.var.set(f"已处理 {done:,} / {total:,} 个组合…")
+        self.var.set(f"Processed {done:,} / {total:,} combinations...")
 
 #== 主应用==
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("模组求解器器   by椛椿")
+        self.title("Module Solver by 椛椿, translated by asplix (thx gemini)")
         self.geometry("1650x1000")
         self.minsize(1080, 680)
         self.gems = []  # 每项: {"a1":..., "p1":int, "a2":..., "p2":int}
@@ -345,13 +345,13 @@ class App(tk.Tk):
             # 获取网络接口
             interfaces = get_network_interfaces()
             if not interfaces:
-                messagebox.showerror("错误", "未找到可用的网络接口")
+                messagebox.showerror("Error", "No available network interfaces found")
                 return
             
             # 如果只有一个接口，直接使用
             if len(interfaces) == 1:
                 selected_interface = interfaces[0]['name']
-                messagebox.showinfo("网络接口", f"检测到唯一网络接口，将使用: {selected_interface}")
+                messagebox.showinfo("Network Interface", f"Detected only one network interface, will use: {selected_interface}")
             else:
                 # 显示接口选择对话框
                 dialog = NetworkInterfaceDialog(self, interfaces)
@@ -368,13 +368,13 @@ class App(tk.Tk):
             self.packet_capture.start_capture(callback=self.on_packet_data_received)
             
             self.is_capturing = True
-            self.capture_btn.config(text="停止抓包")
-            self.capture_status.config(text=f"抓包中 - {selected_interface}")
+            self.capture_btn.config(text="Stop Capture")
+            self.capture_status.config(text=f"Capturing - {selected_interface}")
             
-            messagebox.showinfo("开始抓包", f"已开始监听网络接口: {selected_interface}\n请在游戏中切换地图或重新登陆")
+            messagebox.showinfo("Start Capture", f"Started listening on network interface: {selected_interface}\nPlease switch maps or re-login in the game")
             
         except Exception as e:
-            messagebox.showerror("抓包错误", f"启动抓包失败：\n{e}")
+            messagebox.showerror("Capture Error", f"Failed to start capture:\n{e}")
 
     def stop_packet_capture(self):
         """停止抓包"""
@@ -383,8 +383,8 @@ class App(tk.Tk):
             self.packet_capture = None
         
         self.is_capturing = False
-        self.capture_btn.config(text="开始抓包")
-        self.capture_status.config(text="未开始")
+        self.capture_btn.config(text="Start Capture")
+        self.capture_status.config(text="Not Started")
 
     def on_packet_data_received(self, data: Dict[str, Any]):
         """处理接收到的抓包数据"""
@@ -410,8 +410,8 @@ class App(tk.Tk):
                 
                 if converted_count > 0:
                     # 更新状态显示
-                    self.capture_status.config(text=f"已获取 {converted_count} 个模组")
-                    messagebox.showinfo("抓包成功", f"成功解析 {converted_count} 个模组数据\n已自动添加到模组列表")
+                    self.capture_status.config(text=f"Acquired {converted_count} modules")
+                    messagebox.showinfo("Capture Successful", f"Successfully parsed {converted_count} module data\nAutomatically added to the module list")
                     
                     # 如果启用了自动暂停，则暂停抓包
                     if self.auto_pause_after_data:
@@ -424,10 +424,10 @@ class App(tk.Tk):
         """自动暂停抓包"""
         if self.is_capturing:
             self.stop_packet_capture()
-            self.capture_status.config(text="已自动暂停 - 数据获取完成")
+            self.capture_status.config(text="Auto-paused - Data acquisition complete")
             
             # 可选：显示提示信息
-            messagebox.showinfo("自动暂停", "检测到模组数据已获取完成，抓包已自动暂停。\n如需继续抓包请重新点击开始抓包。")
+            messagebox.showinfo("Auto-Pause", "Module data acquisition detected, capture has been auto-paused.\nIf you need to continue capturing, please click \"Start Capture\" again.")
 
     def _parse_modules_from_vdata(self, v_data):
         """从v_data解析模组，不触发优化和退出"""
@@ -447,7 +447,7 @@ class App(tk.Tk):
                             MODULE_NAMES = {}
                             MODULE_ATTR_NAMES = {}
                         
-                        module_name = MODULE_NAMES.get(config_id, f"未知模组({config_id})")
+                        module_name = MODULE_NAMES.get(config_id, f"Unknown Module ({config_id})")
                         mod_parts = list(item.ModNewAttr.ModParts)
                         
                         # 查找模组详细信息
@@ -467,7 +467,7 @@ class App(tk.Tk):
                             init_link_nums = mod_info.InitLinkNums
                             for i, part_id in enumerate(mod_parts):
                                 if i < len(init_link_nums):
-                                    attr_name = MODULE_ATTR_NAMES.get(part_id, f"未知属性({part_id})")
+                                    attr_name = MODULE_ATTR_NAMES.get(part_id, f"Unknown Attribute ({part_id})")
                                     attr_value = init_link_nums[i]
                                     module_part = ModulePart(
                                         id=part_id,
@@ -580,7 +580,7 @@ class App(tk.Tk):
     def _open_group_picker_addgem(self):
         """添加模组：整组多选，最多3个；至少2个在 add_gem() 校验"""
         current = [x for x in [self.a1.get_value(), self.a2.get_value(), self.a3.get_value()] if x]
-        dlg = MultiCheckDialog(self, "选择模组词条（最多3个）", ATTRS, preselected=current, max_select=3, columns=4)
+        dlg = MultiCheckDialog(self, "Select Module Attributes (Max 3)", ATTRS, preselected=current, max_select=3, columns=4)
         self.wait_window(dlg)
         if dlg.result is None:
             return
@@ -598,7 +598,7 @@ class App(tk.Tk):
     def _open_group_picker_targets(self):
         """期望属性（6个）：整组多选"""
         current = [ent.get_value() for ent, _ in self.targets if ent.get_value()]
-        dlg = MultiCheckDialog(self, "选择期望属性", ATTRS, preselected=current, max_select=6, columns=4)
+        dlg = MultiCheckDialog(self, "Select Target Attributes", ATTRS, preselected=current, max_select=6, columns=4)
         self.wait_window(dlg)
         if dlg.result is None:
             return
@@ -611,7 +611,7 @@ class App(tk.Tk):
     def _open_group_picker_excludes(self):
         """排除属性（9个）：整组多选"""
         current = [ent.get_value() for ent in self.exclude_entries if ent.get_value()]
-        dlg = MultiCheckDialog(self, "选择排除属性", ATTRS, preselected=current, max_select=9, columns=4)
+        dlg = MultiCheckDialog(self, "Select Excluded Attributes", ATTRS, preselected=current, max_select=9, columns=4)
         self.wait_window(dlg)
         if dlg.result is None:
             return
@@ -624,7 +624,7 @@ class App(tk.Tk):
         """职业：单选（最多1个）"""
         cur = self.job_field.get_value()
         pre = [cur] if cur else []
-        dlg = MultiCheckDialog(self, "选择职业", CLASS_LIST, preselected=pre, max_select=1, columns=4)
+        dlg = MultiCheckDialog(self, "Select Class", CLASS_LIST, preselected=pre, max_select=1, columns=4)
         self.wait_window(dlg)
         if dlg.result is None:
             return
@@ -642,27 +642,27 @@ class App(tk.Tk):
             from docx import Document
         except Exception:
             from tkinter import messagebox
-            messagebox.showerror("缺少依赖", "需要安装 python-docx 才能导出 Word：\n\npip install python-docx")
+            messagebox.showerror("Dependency Missing", "python-docx is required to export to Word:\n\npip install python-docx")
             return
 
         # 2) 选择数据源
         if which == "req":
             data = getattr(self, "_last_req_list", [])
-            title = "需求最佳方案（前100）"
+            title = "Best Requirement-based Solutions (Top 100)"
         elif which == "abs":
             data = getattr(self, "_last_abs_list", [])
-            title = "最高战力方案（前100）"
+            title = "Highest Power Solutions (Top 100)"
         elif which == "bs":
             data = getattr(self, "_last_bs_list", [])
-            title = "职业推荐方案（前100）"
+            title = "Class Recommendation Solutions (Top 100)"
         else:
             from tkinter import messagebox
-            messagebox.showerror("错误", f"未知导出类型：{which}")
+            messagebox.showerror("Error", f"Unknown export type: {which}")
             return
 
         if not data:
             from tkinter import messagebox
-            messagebox.showwarning("提示", "当前没有可导出的结果。请先计算。")
+            messagebox.showwarning("Info", "No results available to export. Please calculate first.")
             return
 
         # 3) 生成文档
@@ -671,7 +671,7 @@ class App(tk.Tk):
 
         def lv6_attrs(levels: dict) -> str:
             arr = [a for a, lv in levels.items() if lv == 6]
-            return "，".join(arr) if arr else "（无）"
+            return "，".join(arr) if arr else "(None)"
 
         # 统一解包：兼容 ModuleSolution 与老 pack
         def _unpack(item):
@@ -692,23 +692,23 @@ class App(tk.Tk):
         for k, item in enumerate(data, start=1):
             combo_gems, pts, levels, c6, sumlv, waste, total_points = _unpack(item)
 
-            doc.add_heading(f"方案 #{k}", level=2)
+            doc.add_heading(f"Solution #{k}", level=2)
 
             # 使用模组：逐行显示
             for g in combo_gems:
                 doc.add_paragraph(str(format_gem_str(g)))
 
             # 概览与统计
-            doc.add_paragraph("等级概览：" + levels_pretty(levels))
-            doc.add_paragraph("6级属性：" + lv6_attrs(levels))
-            doc.add_paragraph(f"统计：6级数量={c6}，等级总和={sumlv}，浪费点={waste}，点数总和={total_points}")
+            doc.add_paragraph("Level Overview:" + levels_pretty(levels))
+            doc.add_paragraph("Level 6 Attributes:" + lv6_attrs(levels))
+            doc.add_paragraph(f"Stats: Lvl 6 Count={c6}, Level Sum={sumlv}, Wasted Pts={waste}, Total Pts={total_points}")
 
         # 4) 保存对话框
         from tkinter import filedialog, messagebox
         path = filedialog.asksaveasfilename(
-            title="导出为 Word",
+            title="Export to Word",
             defaultextension=".docx",
-            filetypes=[("Word 文档", "*.docx")],
+            filetypes=[("Word Document", "*.docx")],
             initialfile=title.replace("（前100）", "").strip() + ".docx"
         )
         if not path:
@@ -718,15 +718,15 @@ class App(tk.Tk):
         try:
             doc.save(path)
         except Exception as e:
-            messagebox.showerror("保存失败", f"无法写入文件：\n{e}")
+            messagebox.showerror("Save Failed", f"Unable to write file:\n{e}")
             return
 
-        messagebox.showinfo("完成", f"已导出到：\n{path}")
+        messagebox.showinfo("Complete", f"Exported to:\n{path}")
 
     def delete_low_score_gems(self):
         import tkinter.simpledialog as sd
         # 输入阈值（包含第三词条，最高 30）
-        x = sd.askinteger("删除低级模组", "请输入点数阈值（最大30）：", minvalue=0, maxvalue=30)
+        x = sd.askinteger("Delete Low-Score Modules", "Enter point threshold (max 30):", minvalue=0, maxvalue=30)
         if x is None:
             return
 
@@ -737,10 +737,10 @@ class App(tk.Tk):
         ]
 
         if not cand:
-            messagebox.showinfo("提示", f"没有点数和 < {x} 的模组。")
+            messagebox.showinfo("Info", f"No modules found with a point sum < {x}.")
             return
 
-        if not messagebox.askyesno("确认", f"将删除 {len(cand)} 个模组（点数和 < {x}，已包含第三词条）。是否继续？"):
+        if not messagebox.askyesno("Confirm", f"This will delete {len(cand)} modules (point sum < {x}, including third attribute). Continue?"):
             return
 
         # 从后往前删，避免索引位移
@@ -752,7 +752,7 @@ class App(tk.Tk):
         for g in self.gems:
             self.tree.insert("", tk.END, values=(format_gem_str(g),))
 
-        messagebox.showinfo("完成", f"已删除 {len(cand)} 个模组。")
+        messagebox.showinfo("Complete", f"Deleted {len(cand)} modules.")
 
 
     # ——互斥联动：当任一目标/排除改动时调用
@@ -782,7 +782,7 @@ class App(tk.Tk):
         overlap = targets_set & excludes_set
         if overlap:
             if show_prompt:
-                messagebox.showwarning("冲突", f"目标属性与排除属性不能相同：{', '.join(sorted(overlap))}")
+                messagebox.showwarning("Conflict", f"Target attributes and excluded attributes cannot be the same: {', '.join(sorted(overlap))}")
             for ent in self.exclude_entries:
                 if ent.get_value() in overlap:
                     ent.var.set("")
@@ -799,61 +799,61 @@ class App(tk.Tk):
         right.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         # 左侧：添加模组
-        lf = ttk.LabelFrame(left, text="添加模组")
+        lf = ttk.LabelFrame(left, text="Add Module")
         lf.pack(fill=tk.X, pady=(0,8))
         row = 0
-        ttk.Label(lf, text="属性1").grid(row=row, column=0, sticky="w", padx=6, pady=6)
+        ttk.Label(lf, text="Attribute 1").grid(row=row, column=0, sticky="w", padx=6, pady=6)
         self.a1 = AttrPickerField(lf, ATTRS, width=12, open_handler=lambda e: self._open_group_picker_addgem())
         self.a1.grid(row=row, column=1, sticky="w", padx=6, pady=6)
 
-        ttk.Label(lf, text="点数").grid(row=row, column=2, sticky="w", padx=6)
+        ttk.Label(lf, text="Points").grid(row=row, column=2, sticky="w", padx=6)
         self.p1 = tk.Spinbox(lf, from_=POINT_MIN, to=POINT_MAX, width=5)
         self.p1.grid(row=row, column=3, sticky="w", padx=6)
 
         row += 1
-        ttk.Label(lf, text="属性2").grid(row=row, column=0, sticky="w", padx=6, pady=6)
+        ttk.Label(lf, text="Attribute 2").grid(row=row, column=0, sticky="w", padx=6, pady=6)
         self.a2 = AttrPickerField(lf, ATTRS, width=12, open_handler=lambda e: self._open_group_picker_addgem())
         self.a2.grid(row=row, column=1, sticky="w", padx=6, pady=6)
 
-        ttk.Label(lf, text="点数").grid(row=row, column=2, sticky="w", padx=6)
+        ttk.Label(lf, text="Points").grid(row=row, column=2, sticky="w", padx=6)
         self.p2 = tk.Spinbox(lf, from_=POINT_MIN, to=POINT_MAX, width=5)
         self.p2.grid(row=row, column=3, sticky="w", padx=6)
 
         row += 1
-        ttk.Label(lf, text="属性3").grid(row=row, column=0, sticky="w", padx=6, pady=6)
+        ttk.Label(lf, text="Attribute 3").grid(row=row, column=0, sticky="w", padx=6, pady=6)
         self.a3 = AttrPickerField(lf, ATTRS, width=12, open_handler=lambda e: self._open_group_picker_addgem())
         self.a3.grid(row=row, column=1, sticky="w", padx=6, pady=6)
 
-        ttk.Label(lf, text="点数").grid(row=row, column=2, sticky="w", padx=6)
+        ttk.Label(lf, text="Points").grid(row=row, column=2, sticky="w", padx=6)
         self.p3 = tk.Spinbox(lf, from_=POINT_MIN, to=POINT_MAX, width=5)
         self.p3.grid(row=row, column=3, sticky="w", padx=6)
 
-        ttk.Button(lf, text="添加到列表", command=self.add_gem).grid(row=0, column=4, rowspan=3, padx=10)
+        ttk.Button(lf, text="Add to List", command=self.add_gem).grid(row=0, column=4, rowspan=3, padx=10)
 
         # 左侧：工具条 导出导入
         tool = ttk.Frame(left)
         tool.pack(fill=tk.X, pady=(0,6))
-        ttk.Button(tool, text="导入Excel", command=self.import_excel).pack(side=tk.LEFT)
-        ttk.Button(tool, text="导出Excel", command=self.export_excel).pack(side=tk.LEFT, padx=6)
-        ttk.Button(tool, text="导出模板", command=self.export_template).pack(side=tk.LEFT, padx=6)
-        ttk.Button(tool, text="识别截图", command=self.import_from_image).pack(side=tk.LEFT, padx=6)
-        ttk.Button(tool, text="识别文件夹", command=self.import_from_folder).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tool, text="Import Excel", command=self.import_excel).pack(side=tk.LEFT)
+        ttk.Button(tool, text="Export Excel", command=self.export_excel).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tool, text="Export Template", command=self.export_template).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tool, text="Recognize Screenshot", command=self.import_from_image).pack(side=tk.LEFT, padx=6)
+        ttk.Button(tool, text="Recognize Folder", command=self.import_from_folder).pack(side=tk.LEFT, padx=6)
         # 左侧：工具条 抓包
         tool2 = ttk.Frame(left)
         tool2.pack(fill=tk.X, pady=(6,0))
-        self.capture_btn = ttk.Button(tool2, text="开始抓包", command=self.toggle_packet_capture)
+        self.capture_btn = ttk.Button(tool2, text="Start Capture", command=self.toggle_packet_capture)
         self.capture_btn.pack(side=tk.LEFT)
-        self.capture_status = ttk.Label(tool2, text="未开始")
+        self.capture_status = ttk.Label(tool2, text="Not Started")
         self.capture_status.pack(side=tk.LEFT, padx=(10,0))
 
         # 左侧：职业 / 期望 / 排除 / 计算
-        targetf = ttk.LabelFrame(left, text="目标词条和等级（可不填）")
+        targetf = ttk.LabelFrame(left, text="Target Attributes and Levels (Optional)")
         targetf.pack(fill=tk.X, pady=(6,6))
 
         # 职业选择（点击文本框即弹窗）
         jobf = ttk.Frame(left)
         jobf.pack(fill=tk.X, pady=(0,6))
-        ttk.Label(jobf, text="职业：").pack(side=tk.LEFT, padx=(6,2))
+        ttk.Label(jobf, text="Class:").pack(side=tk.LEFT, padx=(6,2))
 
         self.job_field = AttrPickerField(
             jobf, CLASS_LIST, width=12,
@@ -873,10 +873,10 @@ class App(tk.Tk):
         for i in range(3):
             rowf = ttk.Frame(left_targets)
             rowf.pack(fill=tk.X, pady=4)
-            ttk.Label(rowf, text=f"目标{i+1}").pack(side=tk.LEFT, anchor="w")
+            ttk.Label(rowf, text=f"Target {i+1}").pack(side=tk.LEFT, anchor="w")
             ent = AttrPickerField(rowf, ATTRS, on_change=self._entry_changed, width=10, open_handler=lambda e: self._open_group_picker_targets())
             ent.pack(side=tk.LEFT, padx=(6,8))
-            ttk.Label(rowf, text="目标等级").pack(side=tk.LEFT)
+            ttk.Label(rowf, text="Target Level").pack(side=tk.LEFT)
             sp = tk.Spinbox(rowf, from_=0, to=6, width=5)
             sp.delete(0, tk.END); sp.insert(0, "0")
             sp.pack(side=tk.LEFT, padx=6)
@@ -886,20 +886,20 @@ class App(tk.Tk):
         for i in range(3, 6):
             rowf = ttk.Frame(right_targets)
             rowf.pack(fill=tk.X, pady=4)
-            ttk.Label(rowf, text=f"目标{i+1}").pack(side=tk.LEFT, anchor="w")
+            ttk.Label(rowf, text=f"Target {i+1}").pack(side=tk.LEFT, anchor="w")
             ent = AttrPickerField(rowf, ATTRS, on_change=self._entry_changed, width=10, open_handler=lambda e: self._open_group_picker_targets())
             ent.pack(side=tk.LEFT, padx=(6,8))
-            ttk.Label(rowf, text="目标等级").pack(side=tk.LEFT)
+            ttk.Label(rowf, text="Target Level").pack(side=tk.LEFT)
             sp = tk.Spinbox(rowf, from_=0, to=6, width=5)
             sp.delete(0, tk.END); sp.insert(0, "0")
             sp.pack(side=tk.LEFT, padx=6)
             self.targets.append((ent, sp))
             self.target_entries.append(ent)
         
-        exf = ttk.LabelFrame(left, text="排除词条（可不填）")
+        exf = ttk.LabelFrame(left, text="Excluded Attributes (Optional)")
         exf.pack(fill=tk.X, pady=(0,6))
 
-        labels = [f"排除{i}" for i in range(1, 10)]
+        labels = [f"Exclude {i}" for i in range(1, 10)]
         idx = 0
         for row_i in range(3):
             rowf = ttk.Frame(exf)
@@ -920,16 +920,16 @@ class App(tk.Tk):
                 mode_var = tk.StringVar(value="hard")
                 mode_frame = ttk.Frame(item_frame)
                 mode_frame.pack(side=tk.LEFT)
-                ttk.Radiobutton(mode_frame, text="硬", value="hard", variable=mode_var, 
+                ttk.Radiobutton(mode_frame, text="Hard", value="hard", variable=mode_var, 
                             command=self._refresh_mutex_states).pack(side=tk.LEFT)
-                ttk.Radiobutton(mode_frame, text="软", value="soft", variable=mode_var,
+                ttk.Radiobutton(mode_frame, text="Soft", value="soft", variable=mode_var,
                             command=self._refresh_mutex_states).pack(side=tk.LEFT)
                 
                 self.exclude_entries.append(ent)
                 self.exclude_modes.append(mode_var)
                 idx += 1
                 
-        modef = ttk.LabelFrame(left, text="计算方式", padding=(4, 2)) 
+        modef = ttk.LabelFrame(left, text="Calculation Mode", padding=(4, 2)) 
         modef.pack(fill=tk.X, pady=(2, 2)) 
 
         style = ttk.Style()
@@ -937,9 +937,9 @@ class App(tk.Tk):
         style.configure("Compact.TButton", padding=(6, 2))
 
         self.compute_mode = tk.StringVar(value="fast")
-        rb_fast = ttk.Radiobutton(modef, text="快速", value="fast", variable=self.compute_mode, style="Compact.TRadiobutton")
-        rb_full = ttk.Radiobutton(modef, text="全部", value="full", variable=self.compute_mode, style="Compact.TRadiobutton")
-        btn_calc = ttk.Button(modef, text="计算组合", command=self.compute, style="Compact.TButton")
+        rb_fast = ttk.Radiobutton(modef, text="Fast", value="fast", variable=self.compute_mode, style="Compact.TRadiobutton")
+        rb_full = ttk.Radiobutton(modef, text="Full", value="full", variable=self.compute_mode, style="Compact.TRadiobutton")
+        btn_calc = ttk.Button(modef, text="Calculate Combinations", command=self.compute, style="Compact.TButton")
 
         # 横排三列
         modef.columnconfigure(0, weight=1)
@@ -951,31 +951,31 @@ class App(tk.Tk):
         btn_calc.grid(row=0, column=2, sticky="e", padx=(4, 6), pady=2)
 
         # 左侧：已添加的模组
-        listf = ttk.LabelFrame(left, text="已添加的模组")
+        listf = ttk.LabelFrame(left, text="Added Modules")
         listf.pack(fill=tk.BOTH, expand=True)
         self.tree = ttk.Treeview(listf, columns=("desc",), show="headings", height=9)
-        self.tree.heading("desc", text="模组属性")
+        self.tree.heading("desc", text="Module Attributes")
         self.tree.column("desc", anchor=tk.CENTER, width=460, stretch=True)
         self.tree.pack(fill=tk.BOTH, expand=True, padx=6, pady=6)
 
         btns = ttk.Frame(listf)
         btns.pack(fill=tk.X, padx=6, pady=(0,8))
-        ttk.Button(btns, text="删除选中", command=self.delete_selected).pack(side=tk.LEFT)
-        ttk.Button(btns, text="清空列表", command=self.clear_all).pack(side=tk.LEFT, padx=8)
-        ttk.Button(btns, text="删除低级模组", command=self.delete_low_score_gems).pack(side=tk.LEFT, padx=8)
+        ttk.Button(btns, text="Delete Selected", command=self.delete_selected).pack(side=tk.LEFT)
+        ttk.Button(btns, text="Clear List", command=self.clear_all).pack(side=tk.LEFT, padx=8)
+        ttk.Button(btns, text="Delete Low-Score Modules", command=self.delete_low_score_gems).pack(side=tk.LEFT, padx=8)
 
             # 右侧：计算结果（统一大小 + 滚动条）
-        resf = ttk.LabelFrame(right, text="计算结果")
+        resf = ttk.LabelFrame(right, text="Calculation Results")
         resf.pack(fill=tk.BOTH, expand=True)
 
         # 导出按钮放在最上方，始终可见
         exportf = ttk.Frame(resf)
         exportf.pack(fill=tk.X, padx=8, pady=(8,8))
-        ttk.Button(exportf, text="导出需求最佳（Word）",
+        ttk.Button(exportf, text="Export Best Requirement (Word)",
                 command=lambda: self.export_solutions_to_docx("req")).pack(side=tk.LEFT, padx=(0,8))
-        ttk.Button(exportf, text="导出最高等级（Word）",
+        ttk.Button(exportf, text="Export Highest Level (Word)",
                 command=lambda: self.export_solutions_to_docx("abs")).pack(side=tk.LEFT, padx=(0,8))
-        ttk.Button(exportf, text="导出战力推荐（Word）",
+        ttk.Button(exportf, text="Export Power-based (Word)",
                 command=lambda: self.export_solutions_to_docx("bs")).pack(side=tk.LEFT, padx=(0,8))
 
         def _make_scrolled_text(parent, title, height=12):
@@ -994,9 +994,9 @@ class App(tk.Tk):
             return txt
 
         # 三个方案：大小一致 + 各自滚动条
-        self.abs_text = _make_scrolled_text(resf, "战力最高方案", height=12)
-        self.req_text = _make_scrolled_text(resf, "需求最佳方案(仅在有目标或排除属性时生效)", height=12)
-        self.bs_text  = _make_scrolled_text(resf, "职业推荐方案(仅在选择职业时有效)", height=12)
+        self.abs_text = _make_scrolled_text(resf, "Highest Power Solutions", height=12)
+        self.req_text = _make_scrolled_text(resf, "Best Requirement Solutions (Only active if targets or excludes are set)", height=12)
+        self.bs_text  = _make_scrolled_text(resf, "Class Recommendation Solutions (Only active if a class is selected)", height=12)
 
         # 初始化互斥状态
         self._refresh_mutex_states(False)
@@ -1011,20 +1011,20 @@ class App(tk.Tk):
             p2 = int(self.p2.get())
             p3 = int(self.p3.get())
         except ValueError:
-            messagebox.showerror("错误", "点数必须是整数。")
+            messagebox.showerror("Error", "Points must be an integer.")
             return
         names = [x for x in [a1, a2, a3] if x]
         if len(names) < 2:
-            messagebox.showerror("错误", "至少需要选择两个词条。")
+            messagebox.showerror("Error", "At least two attributes must be selected.")
             return
         if a1 not in ATTRS or a2 not in ATTRS:
-            messagebox.showerror("错误", "属性必须从候选中选择或拼写正确。")
+            messagebox.showerror("Error", "Attributes must be selected from the candidates or spelled correctly.")
             return
         if a1 == a2:
-            messagebox.showerror("错误", "同一颗模组的两条属性不能相同。")
+            messagebox.showerror("Error", "Attributes on the same module cannot be identical.")
             return
         if not (POINT_MIN <= p1 <= POINT_MAX and POINT_MIN <= p2 <= POINT_MAX):
-            messagebox.showerror("错误", f"点数范围应为 {POINT_MIN}~{POINT_MAX}。")
+            messagebox.showerror("Error", f"Points must be in the range {POINT_MIN}~{POINT_MAX}.")
             return
         g = {"a1": a1, "p1": p1, "a2": a2, "p2": p2}
         if a3:
@@ -1048,7 +1048,7 @@ class App(tk.Tk):
             self.tree.delete(i)
 
     def clear_all(self):
-        if messagebox.askyesno("确认", "确定清空所有模组？"):
+        if messagebox.askyesno("Confirm", "Are you sure you want to clear all modules?"):
             self.gems.clear()
             for i in self.tree.get_children():
                 self.tree.delete(i)
@@ -1056,7 +1056,7 @@ class App(tk.Tk):
     # ---------- Excel 导入导出 ----------
     def _require_pandas(self):
         if not HAS_PANDAS:
-            messagebox.showerror("缺少依赖", "需要安装 pandas 和 openpyxl 才能读写 Excel：\n\npip install pandas openpyxl")
+            messagebox.showerror("Dependency Missing", "pandas and openpyxl are required to read/write Excel files:\n\npip install pandas openpyxl")
             return False
         return True
 
@@ -1064,9 +1064,9 @@ class App(tk.Tk):
         if not self._require_pandas():
             return
         path = filedialog.asksaveasfilename(
-            title="导出模板为...",
+            title="Export Template As...",
             defaultextension=".xlsx",
-            filetypes=[("Excel 文件", "*.xlsx")]
+            filetypes=[("Excel File", "*.xlsx")]
         )
         if not path:
             return
@@ -1075,19 +1075,19 @@ class App(tk.Tk):
             {"属性1": "", "点数1": "", "属性2": "", "点数2": "", "属性3": "", "点数3": ""}
         ])
         df.to_excel(Path(path), index=False)
-        messagebox.showinfo("完成", "模板已导出。填写后可用\"导入Excel\"批量载入。\n注意：属性3和点数3为可选项，可以留空。")
+        messagebox.showinfo("Complete", "Template exported. You can fill it and use \"Import Excel\" to load in bulk.\nNote: Attribute 3 and Points 3 are optional and can be left blank.")
 
     def export_excel(self):
         if not self._require_pandas():
             return
         if not self.gems:
-            messagebox.showwarning("提示", "当前没有可导出的模组。")
+            messagebox.showwarning("Info", "There are no modules to export.")
             return
         
         path = filedialog.asksaveasfilename(
-            title="导出为...",
+            title="Export As...",
             defaultextension=".xlsx",
-            filetypes=[("Excel 文件", "*.xlsx")]
+            filetypes=[("Excel File", "*.xlsx")]
         )
         if not path:
             return
@@ -1114,18 +1114,18 @@ class App(tk.Tk):
         try:
             # Use string path directly instead of Path object
             df.to_excel(path, index=False)
-            messagebox.showinfo("完成", f"已导出到：\n{path}")
+            messagebox.showinfo("Complete", f"Exported to:\n{path}")
         except PermissionError:
-            messagebox.showerror("导出失败", "文件可能正在被其他程序使用，请关闭后重试。")
+            messagebox.showerror("Export Failed", "The file might be in use by another program. Please close it and try again.")
         except Exception as e:
-            messagebox.showerror("导出失败", f"无法写入文件：\n{str(e)}")
+            messagebox.showerror("Export Failed", f"Unable to write file:\n{str(e)}")
         
     def import_excel(self):
         if not self._require_pandas():
             return
         path = filedialog.askopenfilename(
-            title="选择 Excel 文件",
-            filetypes=[("Excel 文件", "*.xlsx *.xls")]
+            title="Select Excel File",
+            filetypes=[("Excel File", "*.xlsx *.xls")]
         )
         if not path:
             return
@@ -1136,13 +1136,13 @@ class App(tk.Tk):
                 "属性3": str, "点数3": "Int64"
             })
         except Exception as e:
-            messagebox.showerror("读取失败", f"无法读取文件：\n{e}")
+            messagebox.showerror("Read Failed", f"Unable to read file:\n{e}")
             return
         
         # 检查必需列
         required_cols = {"属性1","点数1","属性2","点数2"}
         if not required_cols.issubset(set(df.columns)):
-            messagebox.showerror("格式错误", "缺少列：属性1、点数1、属性2、点数2\n注意：属性3、点数3为可选列")
+            messagebox.showerror("Format Error", "Missing columns: Attribute 1, Points 1, Attribute 2, Points 2\nNote: Attribute 3, Points 3 are optional.")
             return
         
         loaded = 0
@@ -1173,31 +1173,31 @@ class App(tk.Tk):
             
             # 校验必需词条
             if a1 not in ATTRS or a2 not in ATTRS:
-                errors.append(f"第{row_no}行：前两个属性名不在列表中")
+                errors.append(f"Row {row_no}: The first two attribute names are not in the list")
                 continue
             if a1 == a2:
-                errors.append(f"第{row_no}行：同一模组前两条属性重复")
+                errors.append(f"Row {row_no}: The first two attributes on the same module are duplicates")
                 continue
             if p1 is None or p2 is None:
-                errors.append(f"第{row_no}行：前两个点数缺失或不是整数")
+                errors.append(f"Row {row_no}: The first two points are missing or are not integers")
                 continue
             if not (POINT_MIN <= p1 <= POINT_MAX and POINT_MIN <= p2 <= POINT_MAX):
-                errors.append(f"第{row_no}行：前两个点数需在 {POINT_MIN}~{POINT_MAX}")
+                errors.append(f"Row {row_no}: The first two points must be between {POINT_MIN}~{POINT_MAX}")
                 continue
             
             # 校验可选的第三个词条
             if a3:  # 如果有第三个属性
                 if a3 not in ATTRS:
-                    errors.append(f"第{row_no}行：第三个属性名不在列表中")
+                    errors.append(f"Row {row_no}: The third attribute name is not in the list")
                     continue
                 if a3 in [a1, a2]:
-                    errors.append(f"第{row_no}行：第三个属性与前面的属性重复")
+                    errors.append(f"Row {row_no}: The third attribute duplicates a previous one")
                     continue
                 if p3 is None:
-                    errors.append(f"第{row_no}行：第三个属性有值但点数缺失")
+                    errors.append(f"Row {row_no}: The third attribute has a value, but its points are missing")
                     continue
                 if not (POINT_MIN <= p3 <= POINT_MAX):
-                    errors.append(f"第{row_no}行：第三个点数需在 {POINT_MIN}~{POINT_MAX}")
+                    errors.append(f"Row {row_no}: The third points must be between {POINT_MIN}~{POINT_MAX}")
                     continue
             
             # 创建模组字典
@@ -1211,29 +1211,29 @@ class App(tk.Tk):
             loaded += 1
         
         if errors:
-            msg = "部分行导入失败：\n" + "\n".join(errors[:20])
+            msg = "Some rows failed to import:\n" + "\n".join(errors[:20])
             if len(errors) > 20:
-                msg += f"\n... 还有 {len(errors)-20} 条"
-            messagebox.showwarning("完成（有错误）", f"成功导入 {loaded} 条。\n\n{msg}")
+                msg += f"\n... and {len(errors)-20} more"
+            messagebox.showwarning("Completed (with errors)", f"Successfully imported {loaded} items.\n\n{msg}")
         else:
-            messagebox.showinfo("完成", f"成功导入 {loaded} 条。")
+            messagebox.showinfo("Complete", f"Successfully imported {loaded} items.")
 
     # ---------- 图像识别（单图/文件夹） ----------
     def import_from_image(self):
         path = filedialog.askopenfilename(
-            title="选择一张包含模组列表的截图",
-            filetypes=[("图片","*.png *.jpg *.jpeg *.bmp *.webp")]
+            title="Select a screenshot containing the module list",
+            filetypes=[("Images","*.png *.jpg *.jpeg *.bmp *.webp")]
         )
         if not path:
             return
         detect_t, classify_t = _load_icon_templates()
         if not detect_t:
-            messagebox.showerror("缺少图标", f"未在 {ICON_DIR} 找到模板图标，请先放入 icons/属性名.png")
+            messagebox.showerror("Icons Missing", f"Template icons not found in {ICON_DIR}. Please add icons/AttributeName.png first.")
             return
         try:
             gems = parse_screenshot_to_gems(Path(path), detect_t, classify_t)
         except Exception as e:
-            messagebox.showerror("识别失败", str(e))
+            messagebox.showerror("Recognition Failed", str(e))
             return
         added = 0
         for g in gems:
@@ -1241,11 +1241,11 @@ class App(tk.Tk):
                 self.gems.append(g)
                 self.tree.insert("", tk.END, values=(format_gem_str(g),))
                 added += 1
-        messagebox.showinfo("完成", f"已识别添加 {added} 条。")
+        messagebox.showinfo("Complete", f"Recognized and added {added} items.")
 
     def import_from_folder(self):
         # 1) 选择目录（主线程）
-        folder = filedialog.askdirectory(title="选择包含截图的文件夹")
+        folder = filedialog.askdirectory(title="Select folder containing screenshots")
         if not folder:
             return
         folder = Path(folder)
@@ -1253,14 +1253,14 @@ class App(tk.Tk):
         # 2) 加载模板（主线程）
         detect_t, classify_t = _load_icon_templates()
         if not detect_t:
-            messagebox.showerror("缺少图标", f"未在 {ICON_DIR} 找到模板图标，请先放入 icons/属性名.png")
+            messagebox.showerror("Icons Missing", f"Template icons not found in {ICON_DIR}. Please add icons/AttributeName.png first.")
             return
 
         # 3) 创建进度弹窗（主线程）
         win = tk.Toplevel(self)
-        win.title("OCR 进度")
+        win.title("OCR Progress")
         win.resizable(False, False)
-        ttk.Label(win, text="正在识别截图…").pack(padx=12, pady=(12, 6))
+        ttk.Label(win, text="Recognizing screenshots...").pack(padx=12, pady=(12, 6))
         pb = ttk.Progressbar(win, length=360, mode="determinate", maximum=1)
         pb.pack(padx=12, pady=(0, 4))
         lab = ttk.Label(win, text="")
@@ -1294,7 +1294,7 @@ class App(tk.Tk):
                         except Exception:
                             pass
                         if err:
-                            messagebox.showerror("识别失败", err)
+                            messagebox.showerror("Recognition Failed", err)
                             return
                         # 写回结果到主界面
                         added = 0
@@ -1303,15 +1303,15 @@ class App(tk.Tk):
                                 self.gems.append(g)
                                 self.tree.insert("", tk.END, values=(format_gem_str(g),))
                                 added += 1
-                        msg = [f"共扫描图片：{file_cnt} 张", f"成功解析模组：{added} 条"]
+                        msg = [f"Total images scanned: {file_cnt}", f"Successfully parsed modules: {added}"]
                         if fails:
-                            msg.append(f"失败图片：{len(fails)} 张（仅展示前5条）")
+                            msg.append(f"Failed images: {len(fails)} (showing first 5)")
                             for p, e in fails[:5]:
                                 name = getattr(p, "name", str(p))
                                 msg.append(f"- {name}：{e}")
                             if len(fails) > 5:
                                 msg.append("...")
-                        messagebox.showinfo("识别完成", "\n".join(msg))
+                        messagebox.showinfo("Recognition Complete", "\n".join(msg))
                         return
             except queue.Empty:
                 pass
@@ -1352,12 +1352,12 @@ class App(tk.Tk):
                     hard_exclude_set.add(attr_name)
         
         if len(gems_all) < slots:
-            messagebox.showerror("错误", f"需要至少 {slots} 颗模组。")
+            messagebox.showerror("Error", f"Requires at least {slots} modules.")
             return
 
         # 导入外部模块
         if ModuleOptimizerCalculations is None:
-            messagebox.showerror("缺少计算模块", "未能导入外部计算模块（module_compute.py / module_optimizer_calculations.py）。")
+            messagebox.showerror("Calculation Module Missing", "Failed to import external calculation module (module_compute.py / module_optimizer_calculations.py).")
             return
 
         # 先过滤掉带有硬排除属性的模组
@@ -1367,7 +1367,7 @@ class App(tk.Tk):
         filtered_gems = [g for g in gems_all if not _gem_has_hard_excluded(g)]
         
         if len(filtered_gems) < slots:
-            messagebox.showwarning("无可用组合", "硬排除属性过多或模组过少，无法构成组合。")
+            messagebox.showwarning("No valid combinations", "Too many 'hard' excluded attributes or too few modules to form a combination.")
             return
 
         # 解析目标需求
@@ -1399,7 +1399,7 @@ class App(tk.Tk):
         
         # 创建进度窗口
         self._progress_window = tk.Toplevel(self)
-        self._progress_window.title("正在计算...")
+        self._progress_window.title("Calculating...")
         self._progress_window.resizable(False, False)
         self._progress_window.grab_set()
         self._progress_window.protocol("WM_DELETE_WINDOW", self._cancel_computation)
@@ -1408,13 +1408,13 @@ class App(tk.Tk):
         frame = ttk.Frame(self._progress_window, padding=10)
         frame.pack(fill=tk.BOTH, expand=True)
         
-        self._progress_var = tk.StringVar(value="准备中...")
+        self._progress_var = tk.StringVar(value="Preparing...")
         ttk.Label(frame, textvariable=self._progress_var).pack(pady=(0,10))
         
         self._progress_bar = ttk.Progressbar(frame, length=400, mode="determinate", maximum=100)
         self._progress_bar.pack(pady=(0,10))
         
-        ttk.Button(frame, text="取消", command=self._cancel_computation).pack()
+        ttk.Button(frame, text="Cancel", command=self._cancel_computation).pack()
         
         # 居中显示
         self._progress_window.update_idletasks()
@@ -1477,11 +1477,11 @@ class App(tk.Tk):
             
             # 按属性分组
             groups = opt._partition_gems_by_attributes(filtered_gems)
-            self._compute_queue.put(("progress", 5, 100, f"按属性分组完成，共{len(groups)}组"))
+            self._compute_queue.put(("progress", 5, 100, f"Grouping by attribute complete, {len(groups)} groups total"))
             
             # 生成整数拆分
             integer_partitions = opt._generate_integer_partitions(slots, len(groups))
-            self._compute_queue.put(("progress", 10, 100, f"生成整数拆分完成，共{len(integer_partitions)}种"))
+            self._compute_queue.put(("progress", 10, 100, f"Integer partition generation complete, {len(integer_partitions)} types"))
             
             if use_multiprocess:
                 battle_solutions, requirement_solutions = opt._enum_multiprocess_group_partition(
@@ -1505,7 +1505,7 @@ class App(tk.Tk):
             bs_list = abs_list
             
             algorithm_desc = "多进程组合拆分" if use_multiprocess else "多线程组合拆分"
-            self._compute_queue.put(("progress", 100, 100, "完成"))
+            self._compute_queue.put(("progress", 100, 100, "Complete"))
             self._compute_queue.put(("result", req_list, abs_list, bs_list, opt, target_requirements))
 
         except Exception as e:
@@ -1569,7 +1569,7 @@ class App(tk.Tk):
             
             if not candidates or len(candidates) < slots:
                 dlg.destroy()
-                self._render_empty_results("（快速）")
+                self._render_empty_results("(Fast)")
                 return
 
             if self._cancel:
@@ -1620,12 +1620,12 @@ class App(tk.Tk):
             dlg.destroy()
             
             # 渲染结果
-            self._render_results_with_requirements(req_list, abs_list, bs_list, "（快速）", opt, target_requirements)
+            self._render_results_with_requirements(req_list, abs_list, bs_list, "(Fast)", opt, target_requirements)
             
         except Exception as e:
             import traceback
             traceback.print_exc()
-            messagebox.showerror("计算错误", f"快速计算发生错误：{e}")
+            messagebox.showerror("Calculation Error", f"An error occurred during fast calculation: {e}")
             try:
                 dlg.destroy()
             except:
@@ -1714,7 +1714,7 @@ class App(tk.Tk):
             if self._cancel_flag.is_set():
                 return
 
-            self._compute_queue.put(("progress", 80, 100, "生成不同排序方案..."))
+            self._compute_queue.put(("progress", 80, 100, "Generating different sorting schemes..."))
             
             # 生成两种不同排序的方案
             if effective_target_requirements:
@@ -1736,7 +1736,7 @@ class App(tk.Tk):
             # 职业推荐（目前使用战力排序）
             bs_list = abs_list
             
-            self._compute_queue.put(("progress", 100, 100, "完成"))
+            self._compute_queue.put(("progress", 100, 100, "Complete"))
             self._compute_queue.put(("result", req_list, abs_list, bs_list, opt, target_requirements))
 
         except Exception as e:
@@ -1766,13 +1766,13 @@ class App(tk.Tk):
                     elif msg_type == "result":
                         _, req_list, abs_list, bs_list, opt, target_requirements = item
                         self._close_progress_window()
-                        self._render_results_with_requirements(req_list, abs_list, bs_list, "（全部-多线程）", opt, target_requirements)
+                        self._render_results_with_requirements(req_list, abs_list, bs_list, "(Full - Multi-threaded)", opt, target_requirements)
                         return
                         
                     elif msg_type == "error":
                         _, error_msg = item
                         self._close_progress_window()
-                        messagebox.showerror("计算错误", f"多线程计算发生错误：{error_msg}")
+                        messagebox.showerror("Calculation Error", f"An error occurred during multi-threaded calculation: {error_msg}")
                         return
                         
                 except queue.Empty:
@@ -1823,25 +1823,25 @@ class App(tk.Tk):
         # 最高等级方案始终显示空结果
         self.abs_text.configure(state="normal")
         self.abs_text.delete("1.0", tk.END)
-        self.abs_text.insert(tk.END, f"计算完成{suffix}\n\n（无可用组合）")
+        self.abs_text.insert(tk.END, f"Calculation Complete{suffix}\n\n(No valid combinations)")
         self.abs_text.configure(state="disabled")
         
         # 需求最佳方案根据条件显示
         self.req_text.configure(state="normal")
         self.req_text.delete("1.0", tk.END)
         if has_targets_or_excludes:
-            self.req_text.insert(tk.END, f"计算完成{suffix}\n\n（无可用组合）")
+            self.req_text.insert(tk.END, f"Calculation Complete{suffix}\n\n(No valid combinations)")
         else:
-            self.req_text.insert(tk.END, f"需求最佳方案{suffix}\n\n（需要设置期望属性或排除属性才会显示结果）")
+            self.req_text.insert(tk.END, f"Best Requirement Solutions{suffix}\n\n(Results will only appear if target or excluded attributes are set)")
         self.req_text.configure(state="disabled")
         
         # 战力分推荐方案根据条件显示
         self.bs_text.configure(state="normal")
         self.bs_text.delete("1.0", tk.END)
         if has_job:
-            self.bs_text.insert(tk.END, f"计算完成{suffix}\n\n（无可用组合）")
+            self.bs_text.insert(tk.END, f"Calculation Complete{suffix}\n\n(No valid combinations)")
         else:
-            self.bs_text.insert(tk.END, f"战力分推荐方案{suffix}\n\n（需要选择职业才会显示结果）")
+            self.bs_text.insert(tk.END, f"Class Recommendation Solutions{suffix}\n\n(Results will only appear if a class is selected)")
         self.bs_text.configure(state="disabled")
 
     def _render_results_with_requirements(self, req_list, abs_list, bs_list, suffix, opt, target_requirements):
@@ -1917,7 +1917,7 @@ class App(tk.Tk):
                 if show_req_score and target_requirements:
                     try:
                         req_score = opt.requirement_score_from_attr_breakdown(attr_breakdown, target_requirements)
-                        req_score_text = f"需求匹配分数：{req_score:.0f}\n"
+                        req_score_text = f"Requirement Match Score: {req_score:.0f}\n"
                     except Exception:
                         pass
                         
@@ -1925,20 +1925,20 @@ class App(tk.Tk):
                 try:
                     modules_text = combo_lines(sol)
                 except Exception:
-                    modules_text = "（模块信息解析失败）"
+                    modules_text = "(Failed to parse module info)"
                     
-                box.insert(tk.END, f"方案 #{k}\n")
+                box.insert(tk.END, f"Solution #{k}\n")
                 box.insert(tk.END, f"{modules_text}\n")
-                box.insert(tk.END, f"等级分布：\n{_pretty_levels_table(levels)}\n")
-                box.insert(tk.END, f"战斗力分数：{bp}\n")
+                box.insert(tk.END, f"Level Distribution:\n{_pretty_levels_table(levels)}\n")
+                box.insert(tk.END, f"Power Score: {bp}\n")
                 if req_score_text:
                     box.insert(tk.END, req_score_text)
                 box.insert(tk.END, "\n")
                     
             if not display_data:
-                box.insert(tk.END, "（无）\n")
+                box.insert(tk.END, "(None)\n")
             elif len(data) > 30:
-                box.insert(tk.END, f"（仅显示前30个方案，共{len(data)}个）\n")
+                box.insert(tk.END, f"(Showing only the top 30 solutions, {len(data)} total)\n")
                     
             box.configure(state="disabled")
 
@@ -1949,9 +1949,9 @@ class App(tk.Tk):
         has_job = bool(self.job_field.get_value())
 
         # 按新顺序渲染
-        render_one(self.abs_text, f"战斗力最高方案{suffix}（按战斗力降序）", abs_list, True, False)
-        render_one(self.req_text, f"需求最佳方案{suffix}（按需求匹配降序）", req_list, has_targets_or_excludes, bool(target_requirements and len(target_requirements) > 0))
-        render_one(self.bs_text, f"职业推荐方案{suffix}（按战斗力降序）", bs_list, has_job, False)
+        render_one(self.abs_text, f"Highest Power Solutions{suffix} (by Power descending)", abs_list, True, False)
+        render_one(self.req_text, f"Best Requirement Solutions{suffix} (by Match Score descending)", req_list, has_targets_or_excludes, bool(target_requirements and len(target_requirements) > 0))
+        render_one(self.bs_text, f"Class Recommendation Solutions{suffix} (by Power descending)", bs_list, has_job, False)
 
 class MultiCheckDialog(tk.Toplevel):
     """
@@ -1976,7 +1976,7 @@ class MultiCheckDialog(tk.Toplevel):
         frm.pack(fill=tk.BOTH, expand=True)
 
         # 计数标签
-        self.var_cnt = tk.StringVar(value=f"已选 0 / {self.max_select}")
+        self.var_cnt = tk.StringVar(value=f"Selected 0 / {self.max_select}")
         ttk.Label(frm, textvariable=self.var_cnt).grid(row=0, column=0, columnspan=self.columns, sticky="w", pady=(0,6))
 
         # 网格勾选
@@ -1996,9 +1996,9 @@ class MultiCheckDialog(tk.Toplevel):
         # 底部按钮
         btnf = ttk.Frame(frm)
         btnf.grid(row=row+1, column=0, columnspan=self.columns, pady=(8,0), sticky="e")
-        ttk.Button(btnf, text="清空", command=self._clear).pack(side=tk.LEFT, padx=(0,8))
-        ttk.Button(btnf, text="确定", command=self._ok).pack(side=tk.LEFT, padx=(0,8))
-        ttk.Button(btnf, text="取消", command=self._cancel).pack(side=tk.LEFT)
+        ttk.Button(btnf, text="Clear", command=self._clear).pack(side=tk.LEFT, padx=(0,8))
+        ttk.Button(btnf, text="OK", command=self._ok).pack(side=tk.LEFT, padx=(0,8))
+        ttk.Button(btnf, text="Cancel", command=self._cancel).pack(side=tk.LEFT)
 
         # 初始化计数
         self._update_count()
@@ -2019,7 +2019,7 @@ class MultiCheckDialog(tk.Toplevel):
 
     def _update_count(self):
         n = len(self._sel_names())
-        self.var_cnt.set(f"已选 {n} / {self.max_select}")
+        self.var_cnt.set(f"Selected {n} / {self.max_select}")
 
     def _on_toggle(self):
         names = self._sel_names()
@@ -2066,7 +2066,7 @@ class SimpleListDialog(tk.Toplevel):
 
         top = ttk.Frame(frm)
         top.pack(fill=tk.X)
-        ttk.Label(top, text="搜索：").pack(side=tk.LEFT)
+        ttk.Label(top, text="Search:").pack(side=tk.LEFT)
         self.var_q = tk.StringVar()
         ent = ttk.Entry(top, textvariable=self.var_q, width=24)
         ent.pack(side=tk.LEFT, padx=(6,0))
@@ -2119,7 +2119,7 @@ class AttributePicker(tk.Toplevel):
     选择词条弹窗：搜索 + 列表；仅双击选择；含“（无）”选项。
     on_ok(name|None)
     """
-    def __init__(self, master, all_attrs, disabled_set=None, title="选择词条", on_ok=None, init_text=""):
+    def __init__(self, master, all_attrs, disabled_set=None, title="Select Attribute", on_ok=None, init_text=""):
         super().__init__(master)
         self.title(title)
         self.resizable(False, False)
@@ -2136,7 +2136,7 @@ class AttributePicker(tk.Toplevel):
 
         top = ttk.Frame(frm)
         top.pack(fill=tk.X)
-        ttk.Label(top, text="搜索：").pack(side=tk.LEFT)
+        ttk.Label(top, text="Search:").pack(side=tk.LEFT)
         self.var_q = tk.StringVar(value=init_text)
         ent = ttk.Entry(top, textvariable=self.var_q, width=28)
         ent.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(4,0))
@@ -2183,7 +2183,7 @@ class AttributePicker(tk.Toplevel):
         if val == "（无）": return None
         if val.startswith("× "):
             val = val[2:]
-            messagebox.showwarning("不可选择", f"“{val}”已被占用。")
+            messagebox.showwarning("Not Selectable", f"\"{val}\" is already in use.")
             return None
         return val
 
@@ -2225,7 +2225,7 @@ class ClickSelectEntry(ttk.Frame):
             return
         top = tk.Toplevel(self)
         self._popup = top
-        top.title("请选择")
+        top.title("Please select")
         top.transient(self.winfo_toplevel())
         top.grab_set()
         top.resizable(False, False)
@@ -2317,7 +2317,7 @@ class AttrPickerField(ttk.Frame):
             self.winfo_toplevel(),
             self.values,
             disabled_set=self.disabled,
-            title="选择词条",
+            title="Select Attribute",
             on_ok=self._on_selected,
             init_text=init
         )

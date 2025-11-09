@@ -259,7 +259,7 @@ def _process_partition_group_worker(task_data):
         return local_battle_heap, local_requirement_heap
         
     except Exception as e:
-        print(f"多进程工作函数出错 (批次{task_data.get('batch_id', '?')}): {e}")
+        print(f"Multiprocessing worker error (batch {task_data.get('batch_id', '?')}): {e}")
         import traceback
         traceback.print_exc()
         return [], []
@@ -914,8 +914,8 @@ class ModuleOptimizerCalculations:
                             min_battle = min(s for s, _, _ in global_battle_heap) if global_battle_heap else 0
                             min_req = min(s for s, _, _ in global_requirement_heap) if global_requirement_heap else 0
                             self._compute_queue.put(("progress", progress, 100, 
-                                                f"多线程 {processed_partitions[0]}/{total_partitions} "
-                                                f"战力≥{min_battle:.0f} 需求≥{min_req:.0f}"))
+                                                f"Multi-thread {processed_partitions[0]}/{total_partitions} "
+                                                f"Power≥{min_battle:.0f} Req≥{min_req:.0f}"))
             
             # 合并到全局堆
             with global_lock:
@@ -1019,11 +1019,11 @@ class ModuleOptimizerCalculations:
                         min_battle = min(s for s, _, _ in global_battle_heap) if global_battle_heap else 0
                         min_req = min(s for s, _, _ in global_requirement_heap) if global_requirement_heap else 0
                         self._compute_queue.put(("progress", min(90, int(80*processed_count/total_tasks)), 100,
-                                                f"多进程 {processed_count}/{total_tasks} 战力≥{min_battle:.0f} 需求≥{min_req:.0f}"))
+                                                f"Multi-process {processed_count}/{total_tasks} Power≥{min_battle:.0f} Req≥{min_req:.0f}"))
         except Exception as e:
             # 关键：任何多进程异常都降级回多线程，避免“结果全无”
             if hasattr(self, '_compute_queue'):
-                self._compute_queue.put(("progress", 50, 100, f"多进程失败，自动切多线程：{e}"))
+                self._compute_queue.put(("progress", 50, 100, f"Multiprocessing failed, auto-switching to multi-threading: {e}"))
             return self._enum_multithread_group_partition(
                 groups, integer_partitions, slots, target_requirements,
                 thresholds, attr_type_map, basic_power_map, special_power_map, total_power_map

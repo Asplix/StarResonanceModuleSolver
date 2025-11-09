@@ -93,7 +93,7 @@ class PacketCapture:
         self.callback = callback
         self.is_running = True
         
-        print(f"开始抓包，接口: {self.interface or '自动'}")
+        print(f"Starting capture, interface: {self.interface or 'Auto'}")
         
         # 在新线程中运行抓包
         capture_thread = threading.Thread(target=self._capture_loop)
@@ -108,7 +108,7 @@ class PacketCapture:
     def stop_capture(self):
         """停止抓包"""
         self.is_running = False
-        print("停止抓包")
+        print("Stopping capture")
         
     def _capture_loop(self):
         """抓包主循环"""
@@ -121,7 +121,7 @@ class PacketCapture:
                 stop_filter=lambda _: not self.is_running
             )
         except Exception as e:
-            print(f"抓包过程中发生错误: {e}")
+            print(f"Error during packet capture: {e}")
             
     def _process_packet(self, packet):
         """处理单个数据包"""
@@ -168,7 +168,7 @@ class PacketCapture:
                     self.current_server = src_server
                     self._clear_tcp_cache()
                     self.tcp_next_seq = seq + len(payload)
-                    print(f'识别到游戏服务器: {src_server}')
+                    print(f'Game server identified: {src_server}')
                 else:
                     return  # 不是游戏服务器，跳过
             
@@ -178,7 +178,7 @@ class PacketCapture:
                 
             # TCP流重组逻辑
             if self.tcp_next_seq == -1:
-                print('TCP流重组错误: tcp_next_seq 为 -1')
+                print('TCP stream reassembly error: tcp_next_seq is -1')
                 if len(payload) > 4 and struct.unpack('>I', payload[:4])[0] < 0x0fffff:
                     self.tcp_next_seq = seq
                 return
@@ -242,7 +242,7 @@ class PacketCapture:
                     break
                     
                 if packet_size > 0x0fffff:
-                    print(f"无效的数据包长度: {packet_size}")
+                    print(f"Invalid packet length: {packet_size}")
                     break
                     
                 # 提取完整数据包
@@ -351,7 +351,7 @@ class PacketCapture:
             SYNC_CONTAINER_DATA_METHOD = 0x00000015
             
             if method_id == SYNC_CONTAINER_DATA_METHOD:
-                print('发现SyncContainerData数据包')
+                print('Found SyncContainerData packet')
                 
                 # 解析protobuf数据
                 sync_data = SyncContainerData()
@@ -425,6 +425,6 @@ class PacketCapture:
                 
             # 检查连接超时
             if self.tcp_last_time and current_time - self.tcp_last_time > FRAGMENT_TIMEOUT:
-                print('无法捕获下一个数据包! 游戏是否已关闭或断开连接?seq: ' + str(self.tcp_next_seq))
+                print('Cannot capture next packet! Has the game been closed or disconnected? seq: ' + str(self.tcp_next_seq))
                 self.current_server = ''
                 self._clear_tcp_cache()

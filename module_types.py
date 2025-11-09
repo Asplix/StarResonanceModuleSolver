@@ -47,48 +47,48 @@ class ModuleAttrType(Enum):
 
 class ModuleCategory(Enum):
     """模组类型分类"""
-    ATTACK = "攻击"
-    GUARDIAN = "守护" 
-    SUPPORT = "辅助"
-    ALL = "全部"
+    ATTACK = "Attack"
+    GUARDIAN = "Guard" 
+    SUPPORT = "Support"
+    ALL = "All"
 
 
 # 模组名称映射
 MODULE_NAMES = {
-    ModuleType.BASIC_ATTACK.value: "基础攻击",
-    ModuleType.HIGH_PERFORMANCE_ATTACK.value: "高性能攻击",
-    ModuleType.EXCELLENT_ATTACK.value: "卓越攻击",
-    ModuleType.BASIC_HEALING.value: "基础治疗",
-    ModuleType.HIGH_PERFORMANCE_HEALING.value: "高性能治疗",
-    ModuleType.EXCELLENT_HEALING.value: "卓越辅助",
-    ModuleType.BASIC_PROTECTION.value: "基础防护",
-    ModuleType.HIGH_PERFORMANCE_PROTECTION.value: "高性能守护",
-    ModuleType.EXCELLENT_PROTECTION.value: "卓越守护",
+    ModuleType.BASIC_ATTACK.value: "Basic Attack",
+    ModuleType.HIGH_PERFORMANCE_ATTACK.value: "High-Performance Attack",
+    ModuleType.EXCELLENT_ATTACK.value: "Excellent Attack",
+    ModuleType.BASIC_HEALING.value: "Basic Healing",
+    ModuleType.HIGH_PERFORMANCE_HEALING.value: "High-Performance Healing",
+    ModuleType.EXCELLENT_HEALING.value: "Excellent Support",
+    ModuleType.BASIC_PROTECTION.value: "Basic Guard",
+    ModuleType.HIGH_PERFORMANCE_PROTECTION.value: "High-Performance Guard",
+    ModuleType.EXCELLENT_PROTECTION.value: "Excellent Guard",
 }
 
 # 模组属性名称映射
 MODULE_ATTR_NAMES = {
-    ModuleAttrType.STRENGTH_BOOST.value: "力量加持",
-    ModuleAttrType.AGILITY_BOOST.value: "敏捷加持",
-    ModuleAttrType.INTELLIGENCE_BOOST.value: "智力加持",
-    ModuleAttrType.SPECIAL_ATTACK_DAMAGE.value: "特攻伤害加持",
-    ModuleAttrType.ELITE_STRIKE.value: "精英打击",
-    ModuleAttrType.SPECIAL_HEALING_BOOST.value: "特攻治疗加持",
-    ModuleAttrType.EXPERT_HEALING_BOOST.value: "专精治疗加持",
-    ModuleAttrType.CASTING_FOCUS.value: "施法专注",
-    ModuleAttrType.ATTACK_SPEED_FOCUS.value: "攻速专注",
-    ModuleAttrType.CRITICAL_FOCUS.value: "暴击专注",
-    ModuleAttrType.LUCK_FOCUS.value: "幸运专注",
-    ModuleAttrType.MAGIC_RESISTANCE.value: "抵御魔法",
-    ModuleAttrType.PHYSICAL_RESISTANCE.value: "抵御物理",
-    ModuleAttrType.EXTREME_DAMAGE_STACK.value: "极·伤害叠加",
-    ModuleAttrType.EXTREME_FLEXIBLE_MOVEMENT.value: "极·灵活身法",
-    ModuleAttrType.EXTREME_LIFE_CONVERGENCE.value: "极·生命凝聚",
-    ModuleAttrType.EXTREME_EMERGENCY_MEASURES.value: "极·急救措施",
-    ModuleAttrType.EXTREME_LIFE_FLUCTUATION.value: "极·生命波动",
-    ModuleAttrType.EXTREME_LIFE_DRAIN.value: "极·生命吸取",
-    ModuleAttrType.EXTREME_TEAM_CRIT.value: "极·全队幸暴",
-    ModuleAttrType.EXTREME_DESPERATE_GUARDIAN.value: "极·绝境守护",
+    ModuleAttrType.STRENGTH_BOOST.value: "Strength Boost",
+    ModuleAttrType.AGILITY_BOOST.value: "Agility Boost",
+    ModuleAttrType.INTELLIGENCE_BOOST.value: "Intellect Boost",
+    ModuleAttrType.SPECIAL_ATTACK_DAMAGE.value: "Special Attack",
+    ModuleAttrType.ELITE_STRIKE.value: "Elite Strike",
+    ModuleAttrType.SPECIAL_HEALING_BOOST.value: "Healing Boost",
+    ModuleAttrType.EXPERT_HEALING_BOOST.value: "Healing Enhance",
+    ModuleAttrType.CASTING_FOCUS.value: "Cast Focus",
+    ModuleAttrType.ATTACK_SPEED_FOCUS.value: "Attack SPD",
+    ModuleAttrType.CRITICAL_FOCUS.value: "Crit Focus",
+    ModuleAttrType.LUCK_FOCUS.value: "Luck Focus",
+    ModuleAttrType.MAGIC_RESISTANCE.value: "Resistance",
+    ModuleAttrType.PHYSICAL_RESISTANCE.value: "Armor",
+    ModuleAttrType.EXTREME_DAMAGE_STACK.value: "DMG Stack",
+    ModuleAttrType.EXTREME_FLEXIBLE_MOVEMENT.value: "Agile",
+    ModuleAttrType.EXTREME_LIFE_CONVERGENCE.value: "Life Condense",
+    ModuleAttrType.EXTREME_EMERGENCY_MEASURES.value: "First Aid",
+    ModuleAttrType.EXTREME_LIFE_FLUCTUATION.value: "Life Wave",
+    ModuleAttrType.EXTREME_LIFE_DRAIN.value: "Life Steal",
+    ModuleAttrType.EXTREME_TEAM_CRIT.value: "Team Luck & Crit",
+    ModuleAttrType.EXTREME_DESPERATE_GUARDIAN.value: "Final Protection",
 }
 
 # 模组类型到分类的映射
@@ -175,27 +175,27 @@ SPECIAL_ATTR_IDS = {
 
 # 属性名称到类型的映射
 ATTR_NAME_TYPE_MAP = {
-    "力量加持": "basic",
-    "敏捷加持": "basic", 
-    "智力加持": "basic",
-    "特攻伤害加持": "basic",
-    "精英打击": "basic",
-    "特攻治疗加持": "basic",
-    "专精治疗加持": "basic",
-    "施法专注": "basic",
-    "攻速专注": "basic",
-    "暴击专注": "basic",
-    "幸运专注": "basic",
-    "抵御魔法": "basic",
-    "抵御物理": "basic",
-    "极·伤害叠加": "special",
-    "极·灵活身法": "special",
-    "极·生命凝聚": "special",
-    "极·急救措施": "special",
-    "极·生命波动": "special",
-    "极·生命汲取": "special",
-    "极·全队幸暴": "special",
-    "极·绝境守护": "special",
+    "Strength Boost": "basic",
+    "Agility Boost": "basic", 
+    "Intellect Boost": "basic",
+    "Special Attack": "basic",
+    "Elite Strike": "basic",
+    "Healing Boost": "basic",
+    "Healing Enhance": "basic",
+    "Cast Focus": "basic",
+    "Attack SPD": "basic",
+    "Crit Focus": "basic",
+    "Luck Focus": "basic",
+    "Resistance": "basic",
+    "Armor": "basic",
+    "DMG Stack": "special",
+    "Agile": "special",
+    "Life Condense": "special",
+    "First Aid": "special",
+    "Life Wave": "special",
+    "Life Steal": "special",
+    "Team Luck & Crit": "special",
+    "Final Protection": "special",
 }
 
 
@@ -222,4 +222,4 @@ class ModuleInfo:
     def __lt__(self, other):
         if not isinstance(other, ModuleInfo):
             return NotImplemented
-        return self.uuid < other.uuid 
+        return self.uuid < other.uuid

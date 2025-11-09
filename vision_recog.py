@@ -482,7 +482,7 @@ def parse_screenshot_to_gems(image_path: Path, detect_templates, classify_templa
     """
     img = cv_imread_unicode(image_path, cv2.IMREAD_COLOR)
     if img is None:
-        raise RuntimeError(f"无法读取图片：{image_path}")
+        raise RuntimeError(f"Unable to read image: {image_path}")
     img = _autoscale_image_to_template(img, detect_templates)
 
     hits = detect_icons_in_image(img, detect_templates)

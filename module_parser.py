@@ -17,7 +17,7 @@ class ModuleParser:
     def __init__(self):
         pass
     
-    def parse_module_info(self, v_data: CharSerialize, category: str = "全部", attributes: List[str] = None, 
+    def parse_module_info(self, v_data: CharSerialize, category: str = "All", attributes: List[str] = None, 
                          exclude_attributes: List[str] = None, match_count: int = 1):
         """
         解析模组信息（用于UI集成）
@@ -40,7 +40,7 @@ class ModuleParser:
             for key, item in package.Items.items():
                 if item.HasField('ModNewAttr') and item.ModNewAttr.ModParts:
                     config_id = item.ConfigId
-                    module_name = MODULE_NAMES.get(config_id, f"未知模组({config_id})")
+                    module_name = MODULE_NAMES.get(config_id, f"Unknown Module ({config_id})")
                     mod_parts = list(item.ModNewAttr.ModParts)
                     # 查找模组详细信息
                     mod_info = mod_infos.get(key) if mod_infos else None
@@ -57,7 +57,7 @@ class ModuleParser:
                         init_link_nums = mod_info.InitLinkNums
                         for i, part_id in enumerate(mod_parts):
                             if i < len(init_link_nums):
-                                attr_name = MODULE_ATTR_NAMES.get(part_id, f"未知属性({part_id})")
+                                attr_name = MODULE_ATTR_NAMES.get(part_id, f"Unknown Attribute ({part_id})")
                                 attr_value = init_link_nums[i]
                                 module_part = ModulePart(
                                     id=part_id,
@@ -71,14 +71,14 @@ class ModuleParser:
                     break
         
         if modules:
-            print(f"解析到 {len(modules)} 个模组")
+            print(f"Parsed {len(modules)} modules")
             
             # 属性筛选（如果有筛选条件）
             if attributes or exclude_attributes:
                 filtered_modules = self._filter_modules_by_attributes(
                     modules, attributes, exclude_attributes, match_count
                 )
-                print(f"筛选后剩余 {len(filtered_modules)} 个模组")
+                print(f"Filtered down to {len(filtered_modules)} modules")
                 return filtered_modules
         
         return modules
