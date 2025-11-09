@@ -7,7 +7,7 @@ Therefore, this project continues under the GPLv3 open-source license.
 
 ## Quick Start
 ### Basic Usage
-1. If you have not used the aforementioned plugins before, please install [Npcap](https://npcap.com/dist/npcap-1.83.exe) (included in the zip archive) or click the link to download it directly. This works with pyhton 3.12.0, i haven't tried with other version
+1. If you have not used the aforementioned plugins before, please install [Npcap](https://npcap.com/dist/npcap-1.83.exe) (included in the zip archive) or click the link to download it directly. This works with python 3.12.0, i haven't tried with other version
 2. Do : pip install psutil numpy opencv-python pytesseract protobuf openpyxl pandas python-docx scapy zstandard
 3. Then : python solver_patched.py
 4. click on Start Capture
